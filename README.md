@@ -3,6 +3,17 @@
 
 ## API Documentation
 
+The backend api are available at : http://3.21.193.150:4000
+The frontend part can be accessed at : http://3.21.193.150
+
+### Applied working methodology:
+    - Took some time for understanding the requirements
+    - Thought about technical steps involved and decided to make api first and then frontend
+    - Because I could only start the assessment one day before deadline due to my other works this week, I decided to go for agile working
+    - Learnt Nestjs through documentations and tutorials
+    - Developed a backend app and deployed it in one container
+    - Developed a frontend app and deployed it in another container
+
 ### Git Flow Used:
     - Flow with incremental commits
     - Development in development branch
@@ -63,14 +74,14 @@
 * **Request Body:**
 	```javascript
   {
-    "name":"name",
-    "gender":"gender",
+    "name":"Sagar",
+    "gender":"Male",
     "phone":9876543210,
     "email": "sager@adhmail.com",
-    "nationality":"nationality",
-    "dob":"03/04/2017",
-    "educationbackground":"education",
-    "preferredmodeofcontact":"prefer"
+    "nationality":"Nepali",
+    "dob":"1995-06-01",
+    "educationbackground":"Bachelor's Level",
+    "preferredmodeofcontact":"Email"
   }
 	```
 
@@ -85,14 +96,14 @@
         "timestamp": "2020-06-13T21:01:31.789Z",
         "data": {
             "id": 1592082091789,
-            "name": "name",
-            "gender": "gender",
-            "phone": 123432,
+            "name": "Sagar",
+            "gender": "Male",
+            "phone": 9876543210,
             "email": "sager@adhmail.com",
-            "nationality": "nationality",
-            "dob": "03/04/2017",
-            "educationbackground": "education",
-            "preferredmodeofcontact": "prefer"
+            "nationality": "Nepali",
+            "dob": "1995-06-01",
+            "educationbackground": "Bachelor's Level",
+            "preferredmodeofcontact": "Email"
         }
     }
 
@@ -115,13 +126,13 @@
         "data": {
             "id": 1592069833279,
             "name": "name",
-            "gender": "gender",
-            "phone": 123432,
+            "gender": "Female",
+            "phone": 9822123432,
             "email": "sager@adhmail.com",
-            "nationality": "nationality",
+            "nationality": "Nepali",
             "dob": "03/04/2017",
-            "educationbackground": "education",
-            "preferredmodeofcontact": "prefer"
+            "educationbackground": "Phd",
+            "preferredmodeofcontact": "None"
         }
     }
 	```
