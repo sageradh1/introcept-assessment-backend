@@ -2,6 +2,7 @@ import { Student } from "src/students/student.model";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { StudentDTO } from "src/students/dtos/student.dto";
 import { GetStudentsDTO } from '../students/dtos/getstudent.dto';
+import { onErrorResumeNext } from "rxjs";
 
 var fs = require('fs')
 const readline = require('readline');
@@ -81,7 +82,7 @@ export default class CustomDbModel{
         return responseList;
     }
 
-    //Find a single student by Id
+
     async getStudentById(id: number) {
         const fileStream = fs.createReadStream('source.csv');
       
