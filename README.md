@@ -1,13 +1,18 @@
 # Introcept Backend API
-## Version 0.0.0
+### Version 0.0.0
 
 ## API Documentation
 
-### The following things were used : 
+### Git Flow Used:
+    - Flow with incremental commits
+    - Development in development branch
+    - Release in master branch (this branch is used by Jenkins for CI)
+
+### The following things/liraries/tools were used : 
     - NestJs as the main framework
     - A simple CSV as data storage
     - Class-validator and class-transformer for server-side validation
-    - Nest based Interceptors and Exception filters for custome logging and error handling
+    - Nest based Interceptors and Exception filters for custom logging and error handling
     - Docker as a container tool
     - Jenkins for CI/CD pipeline 
     - Free tier of AWS as VPS for hosting the webapp
