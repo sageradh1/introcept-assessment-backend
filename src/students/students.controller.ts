@@ -11,7 +11,6 @@ export class StudentController {
     constructor(private readonly studentsService: StudentService) {}
 
     //#region 
-    //For assessment
     @Post()
     addStudent(@Body() reqbody : StudentDTO, @Req() req) : Promise<CommonResponse>{
         
@@ -26,9 +25,6 @@ export class StudentController {
         return this.studentsService.getStudents(reqbody,req.url, req.method,new Date().toISOString());
     }
 
-
-
-    //Extra endpoints for future
     @Get(':id')
     getStudent(
         @Param('id') studentId: number,@Req() req
