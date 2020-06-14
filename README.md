@@ -1,75 +1,191 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
+# Introcept Backend API
+## Version 0.0.0
 
-[travis-image]: https://api.travis-ci.org/nestjs/nest.svg?branch=master
-[travis-url]: https://travis-ci.org/nestjs/nest
-[linux-image]: https://img.shields.io/travis/nestjs/nest/master.svg?label=linux
-[linux-url]: https://travis-ci.org/nestjs/nest
-  
-  <p align="center">A progressive <a href="http://nodejs.org" target="blank">Node.js</a> framework for building efficient and scalable server-side applications, heavily inspired by <a href="https://angular.io" target="blank">Angular</a>.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/dm/@nestjs/core.svg" alt="NPM Downloads" /></a>
-<a href="https://travis-ci.org/nestjs/nest"><img src="https://api.travis-ci.org/nestjs/nest.svg?branch=master" alt="Travis" /></a>
-<a href="https://travis-ci.org/nestjs/nest"><img src="https://img.shields.io/travis/nestjs/nest/master.svg?label=linux" alt="Linux" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#5" alt="Coverage" /></a>
-<a href="https://gitter.im/nestjs/nestjs?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge"><img src="https://badges.gitter.im/nestjs/nestjs.svg" alt="Gitter" /></a>
-<a href="https://opencollective.com/nest#backer"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec"><img src="https://img.shields.io/badge/Donate-PayPal-dc3d53.svg"/></a>
-  <a href="https://twitter.com/nestframework"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## API Documentation
 
-## Description
+### The following things were used : 
+    - NestJs as the main framework
+    - A simple CSV as data storage
+    - Class-validator and class-transformer for server-side validation
+    - Nest based Interceptors and Exception filters for custome logging and error handling
+    - Docker as a container tool
+    - Jenkins for CI/CD pipeline 
+    - Free tier of AWS as VPS for hosting the webapp
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Defaults:
+	By default, these REST APIs will have the following responses format.
+	If unstated, these guidelines are applicable for all the apis.
 
-## Installation
+* **Default Response:**
+	* Success:
+	```javascript
+  {
+      "path": "path",
+      "method": "METHOD",
+      "statusCode": 200,
+      "status": "Success",
+      "timestamp": "Time of Request",
+      "data": {
+          some relevant data according to request
+      }
+  }
+	```
+	* Error:
+	The following errors are expected:
+    - 400 for Bad request or Validation Error
+    - 404 for Not Found Exception
+    - 500 for Internal Server Error
+	```javascript
+    {
+      "path": "path",
+      "method": "METHOD",
+      "statusCode": RelevantStatusCode,
+      "status": "Failure",
+      "timestamp": "2020-06-13T21:01:31.789Z",
+      "data": {
+        error:"Error message"
+      }
+    }
+	```
 
-```bash
-$ npm install
-```
 
-## Running the app
 
-```bash
-# development
-$ npm run start
 
-# watch mode
-$ npm run start:dev
+### 1.a Create Student
+* **Url:** http://3.21.193.150:4000/api/student/
+* **Request Header:**
+	 contentType: 'application/json'
+* **Request Body:**
+	```javascript
+  {
+    "name":"name",
+    "gender":"gender",
+    "phone":9876543210,
+    "email": "sager@adhmail.com",
+    "nationality":"nationality",
+    "dob":"03/04/2017",
+    "educationbackground":"education",
+    "preferredmodeofcontact":"prefer"
+  }
+	```
 
-# production mode
-$ npm run start:prod
-```
+* **Response:**
+	* Success:
+	```javascript
+    {
+        "path": "/api/student/",
+        "method": "POST",
+        "statusCode": 200,
+        "status": "Success",
+        "timestamp": "2020-06-13T21:01:31.789Z",
+        "data": {
+            "id": 1592082091789,
+            "name": "name",
+            "gender": "gender",
+            "phone": 123432,
+            "email": "sager@adhmail.com",
+            "nationality": "nationality",
+            "dob": "03/04/2017",
+            "educationbackground": "education",
+            "preferredmodeofcontact": "prefer"
+        }
+    }
 
-## Test
+### 1.b Student Detail
+* **Type:** GET
+* **Url:** http://3.21.193.150:4000/api/student/1592078909047
+* **Request Header:**
+	 contentType: 'application/json'
 
-```bash
-# unit tests
-$ npm run test
 
-# e2e tests
-$ npm run test:e2e
+* **Response:**
+	* Success:
+	```javascript
+    {
+        "path": "/api/student/1592069833279",
+        "method": "GET",
+        "statusCode": 200,
+        "status": "Success",
+        "timestamp": "2020-06-13T21:08:05.839Z",
+        "data": {
+            "id": 1592069833279,
+            "name": "name",
+            "gender": "gender",
+            "phone": 123432,
+            "email": "sager@adhmail.com",
+            "nationality": "nationality",
+            "dob": "03/04/2017",
+            "educationbackground": "education",
+            "preferredmodeofcontact": "prefer"
+        }
+    }
+	```
 
-# test coverage
-$ npm run test:cov
-```
+### 1.c Get all Students
+* **Type:** POST              (<===  Please notice it is a post request)
+* **Url:** http://3.21.193.150:4000/api/student/all
+* **Request Header:**
+	 contentType: 'application/json'
+* **Request Body:**
+	```javascript
+    {
+      "refId":1592078909047 ,
+      "numberOfStudents":4
+    }
+	```
+
+* **Response:**
+	* Success:
+	```javascript
+    {
+        "path": "/api/student/all",
+        "method": "POST",
+        "statusCode": 200,
+        "status": "Success",
+        "timestamp": "2020-06-13T21:10:05.039Z",
+        "data": [
+            {
+                "id": 1592069833279,
+                "name": "name",
+                "gender": "gender",
+                "phone": 9876543210,
+                "email": "radha@adhmail.com",
+                "nationality": "nationality",
+                "dob": "03/04/2017",
+                "educationbackground": "education",
+                "preferredmodeofcontact": "prefer"
+            },
+            {
+                "id": 1592071959282,
+                "name": "name",
+                "gender": "gender",
+                "phone": 9812343210,
+                "email": "ram@adhmail.com",
+                "nationality": "nationality",
+                "dob": "03/04/2017",
+                "educationbackground": "education",
+                "preferredmodeofcontact": "prefer"
+            },
+            {
+                "id": 1592072125616,
+                "name": "name",
+                "gender": "gender",
+                "phone": 9833333210,
+                "email": "rajes@adhmail.com",
+                "nationality": "nationality",
+                "dob": "03/04/2017",
+                "educationbackground": "education",
+                "preferredmodeofcontact": "prefer"
+            }
+        ]
+    }
+	```
+  NOTE
+	 Enters with id less than 'refId' will be returned. That means older entries than 'refId' will be returned"
+   'numberOfStudents' is the number of entries.
 
 ## Support
-
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
 ## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-  Nest is [MIT licensed](LICENSE).
+- Author - [Sagar Adhikari](https://www.linkedin.com/in/er-sagar-adhikari/)
