@@ -1,0 +1,10 @@
+# # build environment
+# FROM node:12.17.0-alpine as build
+FROM node:10-alpine
+WORKDIR /app
+COPY ./package.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+EXPOSE 4000
+CMD ["npm", "run", "start:prod"]
