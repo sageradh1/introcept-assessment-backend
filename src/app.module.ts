@@ -7,27 +7,29 @@ import { StudentModule } from './students/students.module';
 import { HttpExceptionFilter } from './exceptions/http-exception.filters';
 import { ValidationExceptionFilter } from './exceptions/validation-exception.filters';
 import { ValidationPipe } from './pipes/validation.pipes';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [StudentModule],
+  imports: [StudentModule, AuthModule],
   controllers: [AppController],
-  providers: [AppService,
-  {
-    provide: APP_INTERCEPTOR,
-    useClass: LoggingInterceptor,
-  },
-  {
-    provide: APP_FILTER,
-    useClass: HttpExceptionFilter,
-  },
-  {
-    provide: APP_FILTER,
-    useClass: ValidationExceptionFilter,
-  },
-  {
-    provide: APP_PIPE,
-    useClass: ValidationPipe,
-  }
+  providers: [
+    AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: ValidationExceptionFilter,
+    },
+    {
+      provide: APP_PIPE,
+      useClass: ValidationPipe,
+    },
   ],
 })
 export class AppModule {}
