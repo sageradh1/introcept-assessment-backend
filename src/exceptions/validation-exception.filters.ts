@@ -1,4 +1,11 @@
-import { ExceptionFilter, Catch, ArgumentsHost, HttpException, BadRequestException, Logger } from '@nestjs/common';
+import {
+  ExceptionFilter,
+  Catch,
+  ArgumentsHost,
+  HttpException,
+  BadRequestException,
+  Logger,
+} from '@nestjs/common';
 import { Request, Response } from 'express';
 import { CommonResponse } from 'src/shared/common-response.model';
 
@@ -11,27 +18,23 @@ export class ValidationExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>();
     const status = exception.getStatus();
 
-
     const myresponse = new CommonResponse(
       request.url,
       request.method,
       status,
-      "Failure",
+      'Failure',
       new Date().toISOString(),
       {
-        error: exception.message ||"Bad Request"|| ""
-      }
+        error: exception.message || 'Bad Request' || '',
+      },
     );
-    
+
     Logger.error(
       `${request.method} ${request.url}`,
       JSON.stringify(myresponse),
-      'Bad Request' ,
+      'Bad Request',
     );
 
-
-    response
-      .status(status)
-      .json(myresponse);
+    response.status(status).json(myresponse);
   }
 }
