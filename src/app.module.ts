@@ -10,7 +10,8 @@ import { ValidationPipe } from './pipes/validation.pipes';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [StudentModule, AuthModule],
+  imports: [AuthModule, StudentModule],
+
   controllers: [AppController],
   providers: [
     AppService,

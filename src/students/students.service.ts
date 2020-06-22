@@ -1,15 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { Student } from './interfaces/student.interface';
+import { Injectable, NotFoundException, Logger } from '@nestjs/common';
+
 import CustomDbModel from 'src/db/db.helper';
 import { StudentDTO } from './dtos/student.dto';
 import { CommonResponse } from '../shared/common-response.model';
 import { GetStudentsDTO } from './dtos/getstudent.dto';
+import { Student } from './student.model';
 
 @Injectable()
 export class StudentService {
   constructor(private readonly studentModel: CustomDbModel) {}
-
-  private Students: Student[] = [];
 
   async getSingleStudent(
     StudentId: number,
@@ -73,7 +72,7 @@ export class StudentService {
   }
 
   async findByPayload(payload: any) {
-    const { studentId } = payload;
-    return await this.studentModel.getStudentById(studentId);
+    const { email } = payload;
+    return await this.studentModel.getStudentByEmail(email);
   }
 }

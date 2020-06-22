@@ -11,17 +11,23 @@ import {
   Req,
   UseGuards,
   Request,
+  Logger,
 } from '@nestjs/common';
 import { StudentService } from './students.service';
 import { StudentDTO } from './dtos/student.dto';
 import { CommonResponse } from 'src/shared/common-response.model';
 import { GetStudentsDTO } from './dtos/getstudent.dto';
-import { AuthGuard } from '@nestjs/passport';
+import { LocalAuthGuard } from 'src/guards/local-auth.guard';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { AuthService } from 'src/auth/auth.service';
 
 // Controller for Student
 @Controller('api/student')
 export class StudentController {
-  constructor(private readonly studentsService: StudentService) {}
+  constructor(
+    private readonly studentsService: StudentService,
+    private readonly authService: AuthService,
+  ) {}
 
   //#region
   @Post()
@@ -46,6 +52,31 @@ export class StudentController {
       req.method,
       new Date().toISOString(),
     );
+  }
+
+  @UseGuards(LocalAuthGuard)
+  @Post('login')
+  async login(@Request() req): Promise<CommonResponse> {
+    return this.authService.login(
+      req.user,
+      req.url,
+      req.method,
+      new Date().toISOString(),
+    );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  getProfile(@Request() req): CommonResponse {
+    const myResponse = new CommonResponse(
+      req.url,
+      req.method,
+      200,
+      'Success',
+      new Date().toISOString(),
+      req.user,
+    );
+    return myResponse;
   }
 
   @Get(':id')
@@ -83,15 +114,4 @@ export class StudentController {
     // TODO : for future
     return 'delete';
   }
-
-  @UseGuards(AuthGuard('local'))
-  @Post('auth/login')
-  async login(@Request() req) {
-    return req.user;
-  }
-  // @Get()
-  // @UseGuards(AuthGuard('jwt'))
-  // tempAuth() {
-  //   return { auth: 'works' };
-  // }
 }

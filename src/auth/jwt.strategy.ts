@@ -1,36 +1,30 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt, VerifiedCallback } from 'passport-jwt';
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  Injectable,
+  HttpException,
+  HttpStatus,
+  Logger,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { jwtConstants } from './auth.constants';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private authservice: AuthService) {
+  constructor(private authService: AuthService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrkey: 'secretKey',
+      ignoreExpiration: false,
+      secretOrKey: jwtConstants.secret,
     });
   }
 
-  async validate(payload: any, done: VerifiedCallback) {
-    // // TODO obviously the password will be stored in crypted form
-    // const { phone } = payload;
-    // const student = await this.studentService.findByPayload(payload);
-
-    // if (student && student.phone === phone) {
-    //   const { phone, ...result } = student;
-    //   return result;
-    // }
-    // return null;
-
-    const user = await this.authservice.validateUser(payload);
-
+  async validate(payload: any) {
+    const user = await this.authService.validateUserByEmail(payload);
     if (!user) {
-      return done(
-        new HttpException('Unauthorised access', HttpStatus.UNAUTHORIZED),
-        false,
-      );
+      throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
     }
-    return done(null, user, payload.iat);
+    return user;
   }
 }

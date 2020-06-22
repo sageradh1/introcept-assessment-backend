@@ -1,10 +1,20 @@
 import { Student } from 'src/students/student.model';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  Logger,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { StudentDTO } from 'src/students/dtos/student.dto';
 import { GetStudentsDTO } from '../students/dtos/getstudent.dto';
+import { StudentInterface } from '../students/interfaces/student.interface';
 
 var fs = require('fs');
 const readline = require('readline');
+
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 @Injectable()
 // Helper functions for interacting with our csv file
@@ -45,8 +55,46 @@ export default class CustomDbModel {
 
   //Adding new Student row
   async addStudentToFile(student: StudentDTO): Promise<Student> {
-    const newstudent = new Student(
-      new Date().getTime(),
+    var someEncryptedPass = '';
+
+    bcrypt.hash(student.password, saltRounds, function(err, hash) {
+      if (err) {
+        new HttpException(
+          'Problem while adding student',
+          HttpStatus.NOT_IMPLEMENTED,
+        );
+      }
+
+      if (hash) {
+        const newstudent = new Student(
+          student.name,
+          student.gender,
+          student.phone,
+          student.email,
+          student.nationality,
+          student.dob,
+          student.educationbackground,
+          student.preferredmodeofcontact,
+          new Date().getTime(),
+          hash,
+        ) as StudentInterface;
+
+        Logger.log(newstudent);
+
+        try {
+          var stream = fs.createWriteStream('source.csv', { flags: 'a' });
+          stream.write(JSON.stringify(newstudent) + '\n');
+          stream.end();
+        } catch {
+          new HttpException(
+            'Could not write to the file',
+            HttpStatus.NOT_IMPLEMENTED,
+          );
+        }
+      }
+    });
+
+    return new Student(
       student.name,
       student.gender,
       student.phone,
@@ -55,18 +103,6 @@ export default class CustomDbModel {
       student.dob,
       student.educationbackground,
       student.preferredmodeofcontact,
-    );
-    this.appendToFile(JSON.stringify(newstudent));
-    return new Student(
-      newstudent.id,
-      newstudent.name,
-      newstudent.gender,
-      newstudent.phone,
-      newstudent.email,
-      newstudent.nationality,
-      newstudent.dob,
-      newstudent.educationbackground,
-      newstudent.preferredmodeofcontact,
     );
   }
 
@@ -110,6 +146,23 @@ export default class CustomDbModel {
     for await (const line of rl) {
       var currentStudent = JSON.parse(line);
       if (currentStudent.id == id) {
+        return currentStudent;
+      }
+    }
+    throw new NotFoundException();
+  }
+
+  async getStudentByEmail(email: string): Promise<Student> {
+    const fileStream = fs.createReadStream('source.csv');
+
+    const rl = readline.createInterface({
+      input: fileStream,
+      crlfDelay: Infinity,
+    });
+
+    for await (const line of rl) {
+      var currentStudent = JSON.parse(line);
+      if (currentStudent.email == email) {
         return currentStudent;
       }
     }
