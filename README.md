@@ -29,12 +29,12 @@ The frontend part can be accessed at : http://3.21.193.150
     - Free tier of AWS as VPS for hosting the webapp
 
 ### Defaults:
-	By default, these REST APIs will have the following responses format.
-	If unstated, these guidelines are applicable for all the apis.
+  By default, these REST APIs will have the following responses format.
+  If unstated, these guidelines are applicable for all the apis.
 
 * **Default Response:**
-	* Success:
-	```javascript
+  * Success:
+  ```javascript
   {
       "path": "path",
       "method": "METHOD",
@@ -45,13 +45,13 @@ The frontend part can be accessed at : http://3.21.193.150
           some relevant data according to request
       }
   }
-	```
-	* Error:
-	The following errors are expected:
+  ```
+  * Error:
+  The following errors are expected:
     - 400 for Bad request or Validation Error
     - 404 for Not Found Exception
     - 500 for Internal Server Error
-	```javascript
+  ```javascript
     {
       "path": "path",
       "method": "METHOD",
@@ -62,7 +62,7 @@ The frontend part can be accessed at : http://3.21.193.150
         error:"Error message"
       }
     }
-	```
+  ```
 
 
 
@@ -70,9 +70,9 @@ The frontend part can be accessed at : http://3.21.193.150
 ### 1.a Create Student
 * **Url:** http://3.21.193.150:4000/api/student/
 * **Request Header:**
-	 contentType: 'application/json'
+   contentType: 'application/json'
 * **Request Body:**
-	```javascript
+  ```javascript
   {
     "name":"Sagar",
     "gender":"Male",
@@ -83,11 +83,11 @@ The frontend part can be accessed at : http://3.21.193.150
     "educationbackground":"Bachelor's Level",
     "preferredmodeofcontact":"Email"
   }
-	```
+  ```
 
 * **Response:**
-	* Success:
-	```javascript
+  * Success:
+  ```javascript
     {
         "path": "/api/student/",
         "method": "POST",
@@ -107,16 +107,16 @@ The frontend part can be accessed at : http://3.21.193.150
         }
     }
 
-### 1.b Student Detail
+### 1.b Student Detail Through Id
 * **Type:** GET
 * **Url:** http://3.21.193.150:4000/api/student/1592078909047
 * **Request Header:**
-	 contentType: 'application/json'
+   contentType: 'application/json'
 
 
 * **Response:**
-	* Success:
-	```javascript
+  * Success:
+  ```javascript
     {
         "path": "/api/student/1592069833279",
         "method": "GET",
@@ -135,24 +135,24 @@ The frontend part can be accessed at : http://3.21.193.150
             "preferredmodeofcontact": "None"
         }
     }
-	```
+  ```
 
 ### 1.c Get all Students
 * **Type:** POST              (<===  Please notice it is a post request)
 * **Url:** http://3.21.193.150:4000/api/student/all
 * **Request Header:**
-	 contentType: 'application/json'
+   contentType: 'application/json'
 * **Request Body:**
-	```javascript
+  ```javascript
     {
       "refId":1592078909047 ,
       "numberOfStudents":4
     }
-	```
+  ```
 
 * **Response:**
-	* Success:
-	```javascript
+  * Success:
+  ```javascript
     {
         "path": "/api/student/all",
         "method": "POST",
@@ -195,10 +195,113 @@ The frontend part can be accessed at : http://3.21.193.150
             }
         ]
     }
-	```
+  ```
   NOTE
-	 Enters with id less than 'refId' will be returned. That means older entries than 'refId' will be returned"
+   Enters with id less than 'refId' will be returned. That means older entries than 'refId' will be returned"
    'numberOfStudents' is the number of entries.
+
+
+
+
+### 1.d Student Login
+* **Type:** POST
+* **Url:** http://localhost:4000/api/student/login
+* **Request Header:**
+   contentType: 'application/json'
+
+* **Request Body:**
+  ```javascript
+    {
+        "email":"sager@adhmail.com",
+        "password":"somepassword"
+    }
+  ```
+
+
+* **Response:**
+  * Success:
+  ```javascript
+    {
+        "path": "/api/student/login",
+        "method": "POST",
+        "statusCode": 200,
+        "status": "Success",
+        "timestamp": "2020-06-22T13:08:46.180Z",
+        "data": {
+            "user": {
+                "name": "name",
+                "gender": "gender",
+                "phone": 123432,
+                "email": "sager@adhmail.com",
+                "nationality": "nationality",
+                "dob": "03/04/2017",
+                "educationbackground": "education",
+                "preferredmodeofcontact": "prefer",
+                "id": 1592761697984
+            },
+            "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhZ2VyQGFkaG1haWwuY29tIiwiaWF0IjoxNTkyODMxMzI2LCJleHAiOjE1OTM0MzYxMjZ9.B8TxlJXIldVb1QgrjYK61xIo98ZJz1X9sPCiwDLX4Jw"
+        }
+    }
+  ```
+
+    * Failure:
+  ```javascript
+    {
+        "path": "/api/student/login",
+        "method": "POST",
+        "statusCode": 401,
+        "status": "Failure",
+        "timestamp": "2020-06-22T13:38:17.689Z",
+        "data": {
+            "error": "Unauthorized"
+        }
+    }
+  ```
+
+### 1.e Student Profile (Secure route)
+* **Type:** GET
+* **Url:** http://localhost:4000/api/student/profile
+* **Request Header:**
+   contentType: 'application/json'
+     Authorization: 'Bearer {accesstoken-from-login}'
+
+* **Response:**
+  * Success:
+  ```javascript
+    {
+        "path": "/api/student/profile",
+        "method": "GET",
+        "statusCode": 200,
+        "status": "Success",
+        "timestamp": "2020-06-22T13:20:21.119Z",
+        "data": {
+            "name": "name",
+            "gender": "gender",
+            "phone": 123432,
+            "email": "sager@adhmail.com",
+            "nationality": "nationality",
+            "dob": "03/04/2017",
+            "educationbackground": "education",
+            "preferredmodeofcontact": "prefer",
+            "id": 1592761697984
+        }
+    }
+  ```
+  * Failure:
+  ```javascript
+    {
+        "path": "/api/student/profile",
+        "method": "GET",
+        "statusCode": 401,
+        "status": "Failure",
+        "timestamp": "2020-06-22T13:37:15.883Z",
+        "data": {
+            "error": "Unauthorized"
+        }
+    }
+  ```
+
+
 
 ## Support
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
